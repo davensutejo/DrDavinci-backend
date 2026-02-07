@@ -1,0 +1,37 @@
+{
+  "name": "dr-davinci-backend",
+  "version": "1.0.0",
+  "description": "Dr. Davinci Medical AI Backend API",
+  "main": "server/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm server/index.ts",
+    "dev": "nodemon --exec node --loader ts-node/esm server/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "medical",
+    "ai",
+    "chatbot",
+    "healthcare"
+  ],
+  "author": "Daven Sutejo",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6",
+    "bcryptjs": "^2.4.3",
+    "@google/generative-ai": "^0.3.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.1",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.5",
+    "@types/cors": "^2.8.17",
+    "nodemon": "^3.0.2"
+  }
+}
