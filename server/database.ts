@@ -6,12 +6,25 @@ import fs from 'fs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Resolve to parent directory (server/) if in dist folder
 const baseDir = __dirname.includes('dist') ? path.dirname(__dirname) : __dirname;
-const dbPath = process.env.DATABASE_PATH ? path.resolve(baseDir, process.env.DATABASE_PATH) : path.join(baseDir, 'data', 'app.db');
-const dataDir = path.dirname(dbPath);
 
-// Ensure data directory exists
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+// Use in-memory database on Vercel, file-based otherwise
+const isVercel = process.env.VERCEL === '1';
+const dbPath = isVercel 
+  ? ':memory:' 
+  : process.env.DATABASE_PATH 
+    ? path.resolve(baseDir, process.env.DATABASE_PATH) 
+    : path.join(baseDir, 'data', 'app.db');
+
+// Ensure data directory exists (only for local development)
+if (!isVercel && dbPath !== ':memory:') {
+  const dataDir = path.dirname(dbPath);
+  try {
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+  } catch (err) {
+    console.error('Error creating data directory:', err);
+  }
 }
 
 const db = new sqlite3.Database(dbPath, (err: any) => {
